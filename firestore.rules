@@ -1,0 +1,26 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // 계약서(contracts) 컬렉션 보안 규칙
+    match /contracts/{contractId} {
+      allow read, write: if true;
+
+      // 감사 추적(auditLogs) 서브컬렉션: 위변조 방지 불변(Append-Only) 규칙
+      match /auditLogs/{logId} {
+        allow read, create: if true;
+        allow update, delete: if false;
+      }
+    }
+
+    // 만족도 조사(satisfaction_surveys)
+    match /satisfaction_surveys/{surveyId} {
+      allow read, write: if true;
+    }
+
+    // 연결 상태 테스트
+    match /test/connection {
+      allow read, write: if true;
+    }
+  }
+}

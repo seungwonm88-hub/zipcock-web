@@ -1,0 +1,96 @@
+@import "tailwindcss";
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+    opacity: 0.5;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* AI 아바타 부드러운 호흡 애니메이션 (단계별 중요도 반영) */
+@keyframes aiBreathCalm {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4), 0 0 16px rgba(59, 130, 246, 0.25);
+  }
+  50% {
+    transform: scale(1.08);
+    box-shadow: 0 0 0 8px rgba(59, 130, 246, 0), 0 0 24px rgba(59, 130, 246, 0.5);
+  }
+}
+
+@keyframes aiBreathImportant {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.5), 0 0 20px rgba(16, 185, 129, 0.35);
+  }
+  50% {
+    transform: scale(1.14);
+    box-shadow: 0 0 0 12px rgba(16, 185, 129, 0), 0 0 32px rgba(16, 185, 129, 0.65);
+  }
+}
+
+@keyframes aiBreathCritical {
+  0%, 100% {
+    transform: scale(1.02);
+    box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.6), 0 0 24px rgba(245, 158, 11, 0.45);
+  }
+  50% {
+    transform: scale(1.20);
+    box-shadow: 0 0 0 16px rgba(245, 158, 11, 0), 0 0 40px rgba(245, 158, 11, 0.75);
+  }
+}
+
+@keyframes pulseHalo {
+  0%, 100% {
+    opacity: 0.3;
+    transform: scale(0.95);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.25);
+  }
+}
+
+.animate-ai-breath-calm {
+  animation: aiBreathCalm 2.4s ease-in-out infinite;
+}
+
+.animate-ai-breath-important {
+  animation: aiBreathImportant 1.8s ease-in-out infinite;
+}
+
+.animate-ai-breath-critical {
+  animation: aiBreathCritical 1.25s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.animate-pulse-halo {
+  animation: pulseHalo 2s ease-in-out infinite;
+}
+
+.animate-slideUp {
+  animation: slideUp 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-scaleIn {
+  animation: scaleIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.pb-safe {
+  padding-bottom: max(12px, env(safe-area-inset-bottom));
+}

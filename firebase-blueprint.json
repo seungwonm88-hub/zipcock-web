@@ -1,0 +1,135 @@
+{
+  "entities": {
+    "Contract": {
+      "title": "Contract",
+      "description": "Lease renewal contract entity",
+      "type": "object",
+      "properties": {
+        "propertyAddress": {
+          "type": "string",
+          "description": "Address of the leased property"
+        },
+        "status": {
+          "type": "string",
+          "description": "Current contract status",
+          "enum": ["draft", "pending_signature", "signed_completed", "cancelled"]
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "ISO timestamp when the contract was created"
+        }
+      },
+      "required": ["propertyAddress", "status"]
+    },
+    "ContractAuditLog": {
+      "title": "ContractAuditLog",
+      "description": "Tamper-proof audit trail for digital signatures complying with Digital Signature Act",
+      "type": "object",
+      "properties": {
+        "event": {
+          "type": "string",
+          "description": "Audit event type",
+          "enum": ["invitation_sent", "document_opened", "identity_verified", "signature_completed", "tsa_certified"]
+        },
+        "signerRole": {
+          "type": "string",
+          "description": "Participant role who performed the action",
+          "enum": ["lessor", "lessee", "system"]
+        },
+        "signerName": {
+          "type": "string",
+          "description": "Name of the signer"
+        },
+        "signerPhoneMasked": {
+          "type": "string",
+          "description": "Masked phone number of the signer"
+        },
+        "moduSignTransactionId": {
+          "type": "string",
+          "description": "ModuSign unique signature transaction identifier"
+        },
+        "moduSignDocumentId": {
+          "type": "string",
+          "description": "ModuSign document unique ID"
+        },
+        "authMethod": {
+          "type": "string",
+          "description": "Identity authentication method used",
+          "enum": ["kakao_cert", "pass_cert", "mobile_otp", "kica_pki"]
+        },
+        "ipAddress": {
+          "type": "string",
+          "description": "Public IP address of the signer client"
+        },
+        "userAgent": {
+          "type": "string",
+          "description": "Browser and OS device information"
+        },
+        "timestamp": {
+          "type": "string",
+          "description": "ISO 8601 UTC timestamp of signature action"
+        },
+        "documentHash": {
+          "type": "string",
+          "description": "SHA-256 hash of the final signed document"
+        },
+        "previousLogHash": {
+          "type": "string",
+          "description": "SHA-256 hash of preceding audit log for tamper-evident chaining"
+        },
+        "auditLogHash": {
+          "type": "string",
+          "description": "HMAC-SHA256 signature guaranteeing audit trail immutability"
+        }
+      },
+      "required": ["event", "signerRole", "moduSignTransactionId", "timestamp", "documentHash", "auditLogHash"]
+    },
+    "SatisfactionSurvey": {
+      "title": "SatisfactionSurvey",
+      "description": "User satisfaction survey after completing lease renewal flow",
+      "type": "object",
+      "properties": {
+        "rating": {
+          "type": "number",
+          "description": "1 to 5 star rating"
+        },
+        "role": {
+          "type": "string",
+          "description": "Tenant or Lessor"
+        },
+        "feedbackTags": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Selected feedback tags"
+        },
+        "comment": {
+          "type": "string",
+          "description": "Optional user feedback text"
+        },
+        "contractId": {
+          "type": "string",
+          "description": "Related contract identifier"
+        },
+        "submittedAt": {
+          "type": "string",
+          "description": "Submission ISO timestamp"
+        }
+      },
+      "required": ["rating", "role", "contractId", "submittedAt"]
+    }
+  },
+  "firestore": {
+    "/contracts/{contractId}": {
+      "schema": "Contract",
+      "description": "Collection of residential lease renewal contracts"
+    },
+    "/contracts/{contractId}/auditLogs/{logId}": {
+      "schema": "ContractAuditLog",
+      "description": "Append-only legal audit trail subcollection for electronic signature verification"
+    },
+    "/satisfaction_surveys/{surveyId}": {
+      "schema": "SatisfactionSurvey",
+      "description": "User satisfaction feedback collection"
+    }
+  }
+}
